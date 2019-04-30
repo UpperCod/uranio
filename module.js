@@ -16,6 +16,8 @@ let eventAlias = {};
 
 let cssAlias = {};
 
+let EVENTS = "[[EVENTS]]";
+
 function diffProperties(node, oldProps, props, host, isSvg) {
 	for (let name in oldProps) {
 		if (ignoreProperties[name]) continue;
@@ -36,7 +38,7 @@ function setEvent(node, type, nextHandler, host) {
 	// get the name of the event to use
 	type = eventAlias[type];
 
-	let events = (node.handlers = node.handlers || new Map());
+	let events = (node[EVENTS] = node[EVENTS] || new Map());
 
 	let handlers = events.get(host);
 	if (!handlers) {
@@ -216,18 +218,17 @@ function diffChildren(node, host, children, isSvg) {
 	}
 }
 
-function diffNode(vnode, node, host, isSvg) {
-	node && loadNode(node);
+let VNODES = "[[vnodes]]";
 
+function diffNode(vnode, node, host, isSvg) {
 	let oldVnode = getStateVnode(node, host);
-	let { type, props } = toVnode(vnode);
+	let { type = "#text", props } = toVnode(vnode);
 	let children = props.children;
 
 	isSvg = isSvg || type == "svg";
 
-	if (!node || (node.localName != type && type != "host")) {
+	if (!node || (type != "host" && getNodeName(node) !== type)) {
 		node = createNode(type, isSvg);
-		loadNode(node);
 	}
 
 	if (type == null) {
@@ -251,8 +252,15 @@ function diffNode(vnode, node, host, isSvg) {
 	return node;
 }
 
+function getNodeName({ localName }) {
+	return localName == "#text" ? null : localName;
+}
+/**
+ * prepara los valores por defau
+ * @param {*} node
+ */
 function loadNode(node) {
-	node.states = node.states || new Map();
+	node[VNODES] = node[VNODES] || new Map();
 	if (!node.localName) {
 		node.localName = node.nodeName.toLowerCase();
 	}
@@ -271,11 +279,13 @@ function createNode(type, isSvg) {
 }
 
 function getStateVnode(node, host) {
-	return (node ? node.states.get(host) : 0) || { props: {} };
+	node && loadNode(node);
+	return (node ? node[VNODES].get(host) : 0) || { props: {} };
 }
 
 function setStateVnode(node, host, state) {
-	return node.states.set(host, state);
+	loadNode(node);
+	return node[VNODES].set(host, state);
 }
 
 class Element extends BaseElement {

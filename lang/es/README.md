@@ -4,7 +4,7 @@
 [![gzip](https://badgen.net/bundlephobia/minzip/@atomico/uranio)](https://bundlephobia.com/result?p=@atomico/uranio)
 
 Pequeño experimento que quita la capa de Hooks, HoCs, Componentes Funcionales y contexto de [@atomico/core](https://github.com/atomicojs/core).
-para solo funcionar dentro de web-component.
+para solo como de web-component.
 
 ```jsx
 import { h, Element } from "@atomico/uranio";

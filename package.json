@@ -1,6 +1,6 @@
 {
 	"name": "@atomico/uranio",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "@atomico/uranio",
 	"main": "module.js",
 	"module": "module.js",
@@ -11,6 +11,7 @@
 		"url": "https://github.com/atomicojs/uranio"
 	},
 	"scripts": {
+		"dev": "rollup -c -w",
 		"build": "rollup -c",
 		"test": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
 		"prepare": "npm run build && npm run test"
