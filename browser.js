@@ -1,3 +1,4 @@
+import htm from 'htm';
 import BaseElement from '@atomico/base-element';
 
 let propsRaw = {
@@ -332,4 +333,6 @@ function render(vnode, node, host) {
 	diffNode(vnode, node, host || node);
 }
 
-export { Element, createElement as h, render };
+let html = htm.bind(createElement);
+
+export { Element, createElement as h, html, render };

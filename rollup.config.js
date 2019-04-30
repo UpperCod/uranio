@@ -12,13 +12,25 @@ let plugins = [
 	size()
 ];
 
-export default {
-	input: pkg.source,
-	output: [
-		{
-			file: pkg.module,
-			format: "esm"
-		}
-	],
-	plugins
-};
+export default [
+	{
+		input: pkg.source,
+		output: [
+			{
+				file: pkg.module,
+				format: "esm"
+			}
+		],
+		plugins
+	},
+	{
+		input: "src/browser.js",
+		output: [
+			{
+				file: "browser.js",
+				format: "esm"
+			}
+		],
+		plugins
+	}
+];
