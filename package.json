@@ -18,6 +18,9 @@
 	"dependencies": {
 		"@atomico/base-element": "^0.2.0"
 	},
+	"publishConfig": {
+		"access": "public"
+	},
 	"devDependencies": {
 		"jasmine-core": "^3.4.0",
 		"karma": "^4.0.1",
