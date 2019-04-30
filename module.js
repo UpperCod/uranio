@@ -1,4 +1,93 @@
-import BaseElement from '@atomico/base-element';
+/**
+ * Applies JSON.parse to extract the real value of an attribute from a string.
+ * @param {string} value
+ * @returns {(boolean|string|number|Object|Array)}
+ **/
+function parse(value) {
+	return JSON.parse(value);
+}
+
+class Element extends HTMLElement {
+	constructor() {
+		super();
+		/**@type {Object<string,any>} */
+		this.props = {};
+		/**@type {Promise} */
+		this.mounted = new Promise(resolve => (this.mount = resolve));
+		/**@type {Promise} */
+		this.unmounted = new Promise(resolve => (this.unmount = resolve));
+	}
+	connectedCallback() {
+		this.mount();
+	}
+	disconnectedCallback() {
+		this.unmount();
+	}
+	attributeChangedCallback(name, oldValue, value) {
+		if (oldValue == value) return;
+		this.setProperty(name, value);
+	}
+	static get observedAttributes() {
+		let observables = this.observables || {},
+			attributes = [],
+			/**
+			 * @param {string} - add the setter and getter to the constructor prototype
+			 */
+			proxy = name => {
+				Object.defineProperty(this.prototype, name, {
+					set(value) {
+						this.setProperty(name, value);
+					},
+					get() {
+						return this.props[name];
+					}
+				});
+			};
+		for (let key in observables) {
+			let attr = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+			attributes.push(attr);
+			if (!(name in this.prototype)) proxy(key);
+		}
+		return attributes;
+	}
+	/**
+	 * validate to `value`, and then deliver it to the` update` method.
+	 * @param {name} name
+	 * @param {*} value
+	 */
+	setProperty(name, value) {
+		name = name.replace(/-(\w)/g, (all, letter) => letter.toUpperCase());
+		let { observables } = this.constructor,
+			error,
+			type = observables[name];
+		try {
+			if (typeof value == "string") {
+				switch (type) {
+					case Boolean:
+						value = parse(value || "true") == true;
+						break;
+					case Number:
+						value = Number(value);
+						break;
+					case Object:
+					case Array:
+						value = parse(value);
+						break;
+					case Function:
+						value = window[value];
+						break;
+				}
+			}
+		} catch (e) {
+			error = true;
+		}
+		if (!error && {}.toString.call(value) == `[object ${type.name}]`) {
+			this.update({ [name]: value });
+		} else {
+			throw `the observable [${name}] must be of the type [${type.name}]`;
+		}
+	}
+}
 
 let propsRaw = {
 	className: 1,
@@ -159,7 +248,6 @@ function toVnode(value) {
 function flatMap(children, keyes = [], list = []) {
 	keyes = keyes || [];
 	list = list || [];
-
 	if (Array.isArray(children)) {
 		let length = children.length;
 		for (let i = 0; i < length; i++) {
@@ -168,6 +256,9 @@ function flatMap(children, keyes = [], list = []) {
 	} else {
 		let vnode = toVnode(children);
 		if (typeof vnode == "object") {
+			if (typeof vnode.type == "function") {
+				return flatMap(vnode.type(vnode.props), keyes, list);
+			}
 			if (vnode.key != null) {
 				if (keyes.indexOf(vnode.key) == -1) {
 					keyes.push(vnode.key);
@@ -276,7 +367,7 @@ function setStateVnode(node, host, state) {
 	return node.states.set(host, state);
 }
 
-class Element extends BaseElement {
+class Element$1 extends Element {
 	constructor() {
 		super();
 		let prevent;
@@ -330,4 +421,4 @@ function render(vnode, node, host) {
 	diffNode(vnode, node, host || node);
 }
 
-export { Element, createElement as h, render };
+export { Element$1 as Element, createElement as h, render };
