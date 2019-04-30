@@ -14,6 +14,8 @@ let eventAlias = {};
 
 let cssAlias = {};
 
+let EVENTS = "[[EVENTS]]";
+
 export function diffProperties(node, oldProps, props, host, isSvg) {
 	for (let name in oldProps) {
 		if (ignoreProperties[name]) continue;
@@ -34,7 +36,7 @@ function setEvent(node, type, nextHandler, host) {
 	// get the name of the event to use
 	type = eventAlias[type];
 
-	let events = (node.handlers = node.handlers || new Map());
+	let events = (node[EVENTS] = node[EVENTS] || new Map());
 
 	let handlers = events.get(host);
 	if (!handlers) {
