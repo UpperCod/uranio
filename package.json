@@ -1,0 +1,33 @@
+{
+	"name": "@atomico/uranio",
+	"version": "0.0.0",
+	"description": "@atomico/uranio",
+	"main": "index.js",
+	"module": "index.js",
+	"source": "src/index.js",
+	"author": "Matias Trujillo",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/atomicojs/uranio"
+	},
+	"scripts": {
+		"build": "rollup -c",
+		"test": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
+		"prepare": "npm run build && npm run test"
+	},
+	"dependencies": {
+		"@atomico/base-element": "^0.2.0"
+	},
+	"devDependencies": {
+		"jasmine-core": "^3.4.0",
+		"karma": "^4.0.1",
+		"karma-chrome-launcher": "^2.2.0",
+		"karma-jasmine": "^2.0.1",
+		"karma-rollup-preprocessor": "^7.0.0",
+		"karma-spec-reporter": "^0.0.32",
+		"rollup": "^1.7.4",
+		"rollup-plugin-bundle-size": "^1.0.3",
+		"rollup-plugin-node-resolve": "^4.0.1",
+		"rollup-plugin-sucrase": "^2.1.0"
+	}
+}

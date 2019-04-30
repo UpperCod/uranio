@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>litte-a</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <hello-word task="[1,2,3,4,5]"></hello-word>
+  <script type="module" >
+    import {Element,h} from "./dist/litte.mjs";
+    
+    class HelloWord extends Element{
+      props = {value : 5};
+      static observables = {
+        value : Number,
+        async : Promise
+      }
+      beforeRender(props,nextProps){
+        console.log({props,nextProps})
+        return false;
+      }
+      render(){
+        return h("host",{shadowDom:true},
+            h("button",{onClick(){
+              console.log(this)
+            }},
+             "......."
+            ),
+            h("button",{onClick(){
+              console.log(this)
+            }},
+             "......."
+            ),
+            h("button",{onClick(){
+              console.log(this)
+            }},
+             "......."
+            )
+        )
+      }
+    }
+    customElements.define("hello-word",HelloWord)
+  </script>
+</body>
+</html>
