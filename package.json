@@ -1,6 +1,6 @@
 {
 	"name": "@atomico/uranio",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "@atomico/uranio",
 	"main": "module.js",
 	"module": "module.js",
