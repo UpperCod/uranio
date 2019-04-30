@@ -2,8 +2,8 @@
 	"name": "@atomico/uranio",
 	"version": "0.0.0",
 	"description": "@atomico/uranio",
-	"main": "index.js",
-	"module": "index.js",
+	"main": "module.js",
+	"module": "module.js",
 	"source": "src/index.js",
 	"author": "Matias Trujillo",
 	"repository": {

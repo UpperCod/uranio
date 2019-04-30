@@ -3,7 +3,8 @@
 [![npm](https://badgen.net/npm/v/@atomico/uranio)](http://npmjs.com/@atomico/uranio)
 [![gzip](https://badgen.net/bundlephobia/minzip/@atomico/uranio)](https://bundlephobia.com/result?p=@atomico/uranio)
 
-Small experiment that removes the layer of Hooks, Hooks, Functional Components and the context of [@atomico/core](https://github.com/atomicojs/core). to only work within web-component.
+Pequeño experimento que quita la capa de Hooks, HoCs, Componentes Funcionales y contexto de [@atomico/core](https://github.com/atomicojs/core).
+para solo funcionar dentro de web-component.
 
 ```jsx
 import { h, Element } from "@atomico/uranio";
