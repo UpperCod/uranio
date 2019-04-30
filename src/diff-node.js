@@ -2,8 +2,15 @@ import { diffProperties } from "./diff-properties";
 import { diffChildren } from "./diff-children";
 import { toVnode } from "./vnode";
 
+// define a private property to isolate the state of the virtual-dom in the node
 let VNODES = "[[vnodes]]";
-
+/**
+ *
+ * @param {} vnode
+ * @param {(HTMLElement|SVGElement|Text)} node
+ * @param {(HTMLElement|SVGElement)} host
+ * @param {boolean} isSvg
+ */
 export function diffNode(vnode, node, host, isSvg) {
 	let oldVnode = getStateVnode(node, host);
 	let { type = "#text", props } = toVnode(vnode);
